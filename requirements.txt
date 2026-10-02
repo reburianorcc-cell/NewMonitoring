@@ -10,3 +10,4 @@ bcrypt>=4.1
 pyshp>=2.3
 pyproj>=3.6
 streamlit-pdf-viewer
+psycopg[binary]
