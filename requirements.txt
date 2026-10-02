@@ -7,6 +7,6 @@ sqlalchemy
 supabase>=2.18
 pydeck>=0.9
 bcrypt>=4.1
-streamlit-pdf-viewer>=0.1.0
 pyshp>=2.3
 pyproj>=3.6
+streamlit-pdf-viewer
