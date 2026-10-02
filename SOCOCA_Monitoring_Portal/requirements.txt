@@ -1,0 +1,9 @@
+streamlit>=1.41
+pandas>=2.1
+plotly>=5.18
+openpyxl>=3.1
+psycopg2-binary
+sqlalchemy
+supabase>=2.18
+pydeck>=0.9
+bcrypt>=4.1
