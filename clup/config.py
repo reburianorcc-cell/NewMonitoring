@@ -1,4 +1,4 @@
-APP_TITLE = "Bohol CLUP Monitoring Dashboard"
+APP_TITLE = "CLUP Monitoring Dashboard"
 APP_ICON = "🗺️"
 AVERAGE_HECTARE_BENCHMARK = 600.0
 BOHOL_CENTER = {"latitude": 9.85, "longitude": 124.14}
