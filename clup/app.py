@@ -102,7 +102,6 @@ if dashboards:
     with selector_col:
         selected_dashboard = st.selectbox("📊 Selected dashboard", names, index=names.index(current) if current in names else 0, key="clup_dashboard_selector")
         st.session_state.clup_selected_dashboard = selected_dashboard
-        st.caption(f"Source: {dashboards[selected_dashboard]['source_name']}")
 elif role == "operator":
     st.warning("Your assigned dashboard has no CLUP data yet. Open Data Upload to add it.")
 
@@ -128,11 +127,24 @@ if selected_dashboard:
                 display_region = f"{regions.iloc[0]} · PLANNING & DEVELOPMENT"
 
 with title_col:
-    heading = f"{display_location} CLUP Monitoring Dashboard" if display_location != "CLUP" else APP_TITLE
+    # Use the selected Supabase dashboard record as the authoritative title.
+    # Workbook fields may still contain an older test province/municipality name.
+    if selected_dashboard:
+        normalized_name = selected_dashboard.strip()
+        heading = normalized_name if normalized_name.casefold().endswith("dashboard") else f"{normalized_name} Dashboard"
+        description_location = normalized_name
+        for suffix in (" CLUP Monitoring Dashboard", " CLUP Monitoring", " Dashboard"):
+            if description_location.casefold().endswith(suffix.casefold()):
+                description_location = description_location[:-len(suffix)].strip()
+                break
+        description_location = description_location or display_location
+    else:
+        heading = APP_TITLE
+        description_location = display_location
     st.markdown(
         f"<div class='page-heading'><span class='eyebrow'>{display_region}</span>"
         f"<h1>{heading}</h1><p>Monitor approved land-use areas, locational clearances "
-        f"and land-use reclassification activity for {display_location}.</p></div>",
+        f"and land-use reclassification activity for {description_location}.</p></div>",
         unsafe_allow_html=True,
     )
 
@@ -503,7 +515,29 @@ else:
             st.info("Upload history and dashboard deletion are available to administrators.")
         else:
             history = load_history()
-            st.dataframe(history, use_container_width=True, hide_index=True) if not history.empty else st.info("No upload history yet.")
+            if history.empty:
+                st.info("No upload history yet.")
+            else:
+                history = history.rename(columns={
+                    "created_at": "Uploaded At",
+                    "username": "Uploaded By",
+                    "dashboard_name": "Dashboard",
+                    "section": "Section",
+                    "source_name": "Source File",
+                })
+                st.dataframe(
+                    history,
+                    use_container_width=True,
+                    hide_index=True,
+                    height=min(520, 40 + (len(history) * 35)),
+                    column_config={
+                        "Uploaded At": st.column_config.DatetimeColumn(format="MMM DD, YYYY · hh:mm a", width="medium"),
+                        "Uploaded By": st.column_config.TextColumn(width="medium"),
+                        "Dashboard": st.column_config.TextColumn(width="medium"),
+                        "Section": st.column_config.TextColumn(width="medium"),
+                        "Source File": st.column_config.TextColumn(width="large"),
+                    },
+                )
             st.divider()
             st.subheader("Delete Dashboard Data")
             if targets:
