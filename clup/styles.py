@@ -32,6 +32,23 @@ def apply_styles():
     .page-heading .eyebrow {font-size:.7rem;font-weight:800;letter-spacing:.16em;color:#0878e6}
     .page-heading h1 {font-size:2rem;margin:.18rem 0 .25rem;color:var(--ink);letter-spacing:-.035em}
     .page-heading p {color:var(--muted);margin:0 0 1rem}
+    /* Let the upload tabs wrap instead of covering and clipping the first tab. */
+    div[data-baseweb="tab-list"] {
+        display:flex !important;
+        flex-wrap:wrap !important;
+        gap:.35rem .45rem !important;
+        overflow:visible !important;
+        padding:.25rem 0 .45rem !important;
+    }
+    button[data-baseweb="tab"] {
+        flex:0 0 auto !important;
+        min-width:max-content !important;
+        white-space:nowrap !important;
+        border-radius:9px 9px 0 0 !important;
+        padding:.55rem .75rem !important;
+    }
+    div[data-baseweb="tab-highlight"] {display:none !important}
+    [data-testid="stDataFrame"] {max-width:100%;overflow:hidden;border-radius:12px}
     div[data-testid="stMetric"] {background:var(--card);border:1px solid var(--line);border-left:4px solid #2563eb;border-radius:18px;padding:20px;box-shadow:0 8px 24px #0f172a0a;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
     div[data-testid="stMetric"]:hover {transform:translateY(-5px);box-shadow:0 16px 35px #075aaa20;border-color:#b9dafb}
     div[data-testid="stMetricValue"] {color:var(--ink);font-weight:800}
@@ -66,6 +83,7 @@ def apply_styles():
     [class*="st-key-edit_account_form"] [data-testid="stFormSubmitButton"] button {min-width:210px;border-radius:10px;font-weight:750}
     @media (max-width: 700px) {
         .page-heading h1 {font-size:1.55rem;}
+        button[data-baseweb="tab"] {font-size:.82rem !important;padding:.45rem .58rem !important}
         [class*="st-key-create_account_form"] [data-testid="stForm"],
         [class*="st-key-edit_account_form"] [data-testid="stForm"] {padding:22px 18px;margin-top:.8rem}
         [class*="st-key-create_account_form"] [data-testid="stFormSubmitButton"] button,
